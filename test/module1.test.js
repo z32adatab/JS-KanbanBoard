@@ -1,10 +1,10 @@
-describe('Module 01 - Kanban Board Events', () => {
+describe('Module 01 - Kanban Board Events - kanban.js', () => {
 
   const create_item = ast.findFunction('create_item');
   const validate_if = create_item.findIf();
   const drop = ast.findCall('forEach').findLiteral('drop');
 
-  it('Create an `item`. @create-item', () => {
+  it('Should create an `item` DOM element. @create-item', () => {
     const create_item_assignment = create_item.findVariable('item');
     const create_item_match = {
       'init.callee.object.name': 'document',
@@ -14,7 +14,7 @@ describe('Module 01 - Kanban Board Events', () => {
     assert(matchObj(create_item_assignment, create_item_match), 'Are you creating a variable called `item` and assigning it a call to the `createElement()` function');
   });
 
-  it('Set item attributes. @set-attributes', () => {
+  it('Should set item attributes. @set-attributes', () => {
     const add_class = create_item.findCall('add');
     const add_class_match = {
       'callee.object.object.name': 'item',
@@ -42,7 +42,7 @@ describe('Module 01 - Kanban Board Events', () => {
     item_draggable
   });
 
-  it('`dragstart` event listener. @dragstart-event-listener', () => {
+  it('Should register a listener for the `dragstart` event. @dragstart-event-listener', () => {
     const drag_start = create_item.findLiteral('dragstart');
     const drag_start_match = {
       'callee.object.name': 'item',
@@ -74,7 +74,7 @@ describe('Module 01 - Kanban Board Events', () => {
 
   });
 
-  it('`dragend` event listener. @dragend-event-listener', () => {
+  it('Should register a listener for the `dragend` event. @dragend-event-listener', () => {
     const drag_end = create_item.findLiteral('dragend');
     const drag_end_match = {
       'callee.object.name': 'item',
@@ -101,7 +101,7 @@ describe('Module 01 - Kanban Board Events', () => {
     assert(matchObj(clear_data, clear_data_match), 'In the `dragend` event handler are you setting clear all `dataTransfer` data?');
   });
 
-  it('Create `input` . @create-input', () => {
+  it('Should create an `input` element. @create-input', () => {
     const create_input_assignment = create_item.findVariable('input');
     const create_input_match = {
       'init.callee.object.name': 'document',
@@ -119,7 +119,7 @@ describe('Module 01 - Kanban Board Events', () => {
     assert(matchObj(append_child, append_child_match), 'Are you appending `input` to `item`?');
   });
 
-  it('Create `save_btn`. @create-save-btn', () => {
+  it('Should create a save button. @create-save-btn', () => {
     const save_btn = create_item.findVariable('save_btn');
     const save_btn_match = {
       'init.callee.object.name': 'document',
@@ -136,7 +136,7 @@ describe('Module 01 - Kanban Board Events', () => {
     assert(matchObj(save_btn_html, save_btn_html_match), "Are you setting the HTML of the button to `Save`?");
   });
 
-  it('`save_btn` event listener. @click-event-listener', () => {
+  it('Should register a `save_btn` click event listener. @click-event-listener', () => {
     const save_btn_click = create_item.findLiteral('click');
     const save_btn_click_match = {
       'callee.object.name': 'save_btn',
@@ -148,7 +148,7 @@ describe('Module 01 - Kanban Board Events', () => {
     assert(matchObj(save_btn_click, save_btn_handler_arrow) || matchObj(save_btn_click, save_btn_handler_function), 'Do you have a `click` handler function?');
   });
 
-  it('Valid input `if` statement. @valid-input-if', () => {
+  it('Should validate user input with an `if` statement. @valid-input-if', () => {
     const error_html = create_item.findPropertyAssignment('error', 'innerHTML');
     const error_html_match = {
       'operator': '=',
@@ -163,7 +163,7 @@ describe('Module 01 - Kanban Board Events', () => {
       'Do you have an `if` statement testing whether `input.value` is empty?');
   });
 
-  it('`if` statement body. @valid-input-if-body', () => {
+  it('Should have an `if` statement body. @valid-input-if-body', () => {
     assert(validate_if.consequent, 'Are you creating an `if` statement to check if `input.value` is empty?');
     const if_body = jscs(validate_if.consequent)
 
@@ -193,7 +193,7 @@ describe('Module 01 - Kanban Board Events', () => {
     assert(matchObj(if_adding, if_adding_match), 'Are you setting the `adding` boolean to `false`?');
   });
 
-  it('Valid input `else` statement. @valid-input-else', () => {
+  it('Should have an `else` statement. @valid-input-else', () => {
     assert(validate_if.alternate, 'Are you creating an `else` statement?');
     const else_body = jscs(validate_if.alternate)
     const error_html = else_body.findPropertyAssignment('error', 'innerHTML');
@@ -204,7 +204,7 @@ describe('Module 01 - Kanban Board Events', () => {
     assert(matchObj(error_html, error_html_match), 'In the `else` statement, are you setting the HTML of `error` to `message`?');
   });
 
-  it('Append `save_btn` and return `item`. @append-save-btn-return', () => {
+  it('Should append `save_btn` and return `item`. @append-save-btn-return', () => {
     const append_child = create_item.findCall('appendChild').nodes()[1];
      assert(append_child, 'Are you appending `save_btn` to `item`?');
     const append_child_match = {
@@ -222,7 +222,7 @@ describe('Module 01 - Kanban Board Events', () => {
     assert(matchObj(return_item, return_item_match), 'Has `item` been returned from the `create_item` function?');
   });
 
-  it('`drop` event listener. @drop-event-listener', () => {
+  it('Should register a listener for the `drop` event. @drop-event-listener', () => {
     const drop_match = {
       'callee.object.name': 'element',
       'callee.property.name': 'addEventListener',
@@ -247,7 +247,7 @@ describe('Module 01 - Kanban Board Events', () => {
     assert(matchObj(prevent_default, prevent_default_match), 'Are you calling `preventDefault` on `event` in the `drop` handler function?');
   });
 
-  it('`drop` `dataTransfer` `id`. @drop-data-transfer-id', () => {
+  it('Should get the `id` from `dataTransfer`. @drop-data-transfer-id', () => {
     assert(drop.length, 'Are you adding an event listener to `element` that listens for the `drop` event?');
     const id_get_data = drop.findVariable('id');
     const id_get_data_match = {
@@ -260,7 +260,7 @@ describe('Module 01 - Kanban Board Events', () => {
     assert(matchObj(id_get_data, id_get_data_match), "Are you creating a constant called `id` and setting it to a call to `event.dataTransfer.getData()` and passing in `'text'`?");
   });
 
-  it('`drop` append element. @drop-append-element', () => {
+  it('Should append element. @drop-append-element', () => {
     assert(drop.length, 'Are you adding an event listener to `element` that listens for the `drop` event?');
     const drop_append_child = drop.findCall('appendChild');
     const drop_append_child_match = {
@@ -274,7 +274,7 @@ describe('Module 01 - Kanban Board Events', () => {
     assert(matchObj(drop_append_child, drop_append_child_match), 'Are you appending the element with the `id` of `id` (use: `document.getElementById`) to the `event.target`?');
   });
 
-  it('`dragover` event listener. @drag-over-event-listener', () => {
+  it('Should register a listener for the `dragover` event. @drag-over-event-listener', () => {
     const drag_over = ast.findCall('forEach').findLiteral('dragover');
     const drag_over_match = {
       'callee.object.name': 'element',
