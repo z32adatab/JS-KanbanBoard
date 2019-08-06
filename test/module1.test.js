@@ -4,7 +4,7 @@ describe('Module 01 - Kanban Board Events - kanban.js', () => {
   const validate_if = create_item.findIf();
   const drop = ast.findCall('forEach').findLiteral('drop');
 
-  it('Should create an `item` DOM element. @create-item', () => {
+  it('Should create an `item` `div` element. @create-item', () => {
     const create_item_assignment = create_item.findVariable('item');
     const create_item_match = {
       'init.callee.object.name': 'document',
