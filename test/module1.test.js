@@ -133,7 +133,7 @@ describe('Module 01 - Kanban Board Events', () => {
       'operator': '=',
       'right.value': 'Save'
     };
-    assert(matchObj(save_btn_html, save_btn_html_match), "Are setting the HTML of the button to `Save`?");
+    assert(matchObj(save_btn_html, save_btn_html_match), "Are you setting the HTML of the button to `Save`?");
   });
 
   it('`save_btn` event listener. @click-event-listener', () => {
@@ -156,6 +156,7 @@ describe('Module 01 - Kanban Board Events', () => {
     };
     assert(matchObj(error_html, error_html_match), "Are setting the HTML of `error` to an empty string?");
 
+    assert(jscs(validate_if).length, 'Have you created an `if` statement in the `save_btn` event handler?');
     assert((validate_if.test.operator === '!==' || validate_if.test.operator === '!=') &&
       ((validate_if.test.right.value === '' &&  (validate_if.test.left.object.name === 'input' &&  validate_if.test.left.property.name === 'value')) ||
       (validate_if.test.left.value === '' && (validate_if.test.right.object.name === 'input' && validate_if.test.right.property.name === 'value'))),
@@ -163,7 +164,7 @@ describe('Module 01 - Kanban Board Events', () => {
   });
 
   it('`if` statement body. @valid-input-if-body', () => {
-    assert(validate_if.consequent, "Are creating an `if` statement to check if `input.value` is empty?");
+    assert(validate_if.consequent, 'Are you creating an `if` statement to check if `input.value` is empty?');
     const if_body = jscs(validate_if.consequent)
 
     const if_order = if_body.findAssignment('order');
@@ -172,7 +173,7 @@ describe('Module 01 - Kanban Board Events', () => {
       'left.name': 'order',
       'right.value': 1
     };
-    assert(matchObj(if_order, if_order_match), "Are adding `1` to `order` and reassign it back to `order`?");
+    assert(matchObj(if_order, if_order_match), 'In the `if` statement, are adding `1` to `order` and reassign it back to `order`?');
 
     const if_item_innerhtml = if_body.findPropertyAssignment('item', 'innerHTML');
     const if_item_innerhtml_match = {
@@ -182,25 +183,25 @@ describe('Module 01 - Kanban Board Events', () => {
       'right.object.name': 'input',
       'right.property.name': 'value',
     };
-    assert(matchObj(if_item_innerhtml, if_item_innerhtml_match), "Are setting the HTML of `error` to an empty string?");
+    assert(matchObj(if_item_innerhtml, if_item_innerhtml_match), 'Are you setting the HTML of `item` to the `input` value?');
 
     const if_adding = if_body.findAssignment('adding');
     const if_adding_match = {
       'operator': '=',
       'right.value': false
     };
-    assert(matchObj(if_adding, if_adding_match), "Are setting the HTML of `error` to an empty string?");
+    assert(matchObj(if_adding, if_adding_match), 'Are you setting the `adding` boolean to `false`?');
   });
 
   it('Valid input `else` statement. @valid-input-else', () => {
-    assert(validate_if.consequent, "Are creating an `else` statement?");
+    assert(validate_if.alternate, 'Are you creating an `else` statement?');
     const else_body = jscs(validate_if.alternate)
     const error_html = else_body.findPropertyAssignment('error', 'innerHTML');
     const error_html_match = {
       'operator': '=',
       'right.name': 'message',
     };
-    assert(matchObj(error_html, error_html_match), "Are setting the HTML of `error` to an empty string?");
+    assert(matchObj(error_html, error_html_match), 'In the `else` statement, are you setting the HTML of `error` to `message`?');
   });
 
   it('Append `save_btn` and return `item`. @append-save-btn-return', () => {
@@ -211,14 +212,14 @@ describe('Module 01 - Kanban Board Events', () => {
       'callee.property.name': 'appendChild',
       'arguments.0.name': 'save_btn'
     };
-    assert(match(append_child, append_child_match), 'Are you appending `save_btn` to `item`?');
+    assert(match(append_child, append_child_match), 'Below the `save_btn` event listener, are you appending `save_btn` to `item`?');
 
     const return_item = create_item.findReturn();
     const return_item_match = {
       'type': 'ReturnStatement',
       'argument.name': 'item'
     };
-    assert(matchObj(return_item, return_item_match), 'Are you appending `save_btn` to `item`?');
+    assert(matchObj(return_item, return_item_match), 'Has `item` been returned from the `create_item` function?');
   });
 
   it('`drop` event listener. @drop-event-listener', () => {
