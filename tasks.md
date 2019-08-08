@@ -1,85 +1,81 @@
-# Setup
+## Create an Item
 
-## Installation
+In this module we will add DOM event listeners to a Kanban Board. We will make it possible to add tasks, and drag and drop those tasks between columns.
 
-Run the following command from the root folder of the cloned project to install all dependencies.
+To start, let's open the main file for the project, `js/kanban.js`.
 
-`npm install`
+Find the function called `create_item()`. In the body of this function, use the `createElement()` function to create a DOM element of type `div`. Save a reference to the element in a constant called `item`.
 
-## Verify Setup
+**Hint: when working with DOM elements, you will need to reference `document`.**
 
-In order to verify that everything is setup correctly, run the following command, which should show you the failing tests. This is good! We'll be fixing these tests once we jump into the build step.
+## Set Item Attributes
 
-`npm run test`
+The `item` constant now stores a reference to a fully fledged DOM element. We can manipulate anything about this element. Below the existing code in the `create_item()` function, use the `add` method of the `classList` object to add the existing CSS class of `item` to the `item` element.
 
-Every time you want to check your work locally you can type that command, and it will report the status of every task in that module.
+Next, give the `item` an `id` of `item-` plus the current value of `order`.
 
-As you move through the modules, you can run module-specific tests with the script `npm run test:module1`, replacing the number with one that corresponds with the module you are working in.
+Finally, make the `item` `draggable`.
 
-You can also run a visual test using the command `npm run visual:module1`, replacing the number with one that corresponds with the module you are working in.
+## dragstart Event Listener
 
-## Previewing Your Work
+Now that the `item` is `draggable`, add an event listener that listens for the `dragstart` event to `item`. When creating the event listener, pass an arrow function as the handler. The arrow function should accept a single parameter of `event`, and it should return a call to the `setData()` method. The `setData()` method is part of the `DataTransfer` object, which needs to be accessed through the `event`.
 
-In order to see your changes in a browser, you can run `npm start` from the command line. This will open a browser and you should see your landing page.
+Use the `setData()` method to set `'text'` to the `id` of the `event.target` element.
 
-# Module 01 - Main game loop
+## dragend Event Listener
 
-## 1.1 - Reference an external script
+After the `dragstart` event listener, add an event listener that listens for the `dragend` event to `item`.
 
-@external-script Open `index.html` and add a `script` tag that references the CreateJS on the CreateJS CDN. Also add a `script` tag for the `app.js` file.
+When creating the event listener, pass an arrow function as the handler. The arrow function should accept a single parameter of `event`, and it should return a call to the `clearData()` method. The `clearData()` method is part of the `DataTransfer` object, which needs to be accessed through the `event`.
 
-## 1.2 - Listen for DOMContentLoaded
+## Create input Element
 
-@listen-domcontentloaded Open `app.js` and add an event lister to the `document`. Listen for the `DOMContentLoaded` event. The event handler should be an anonymous function.
+Below the drag event listeners, use the `createElement()` method to create a DOM element of type `input`. Save a reference to the element in a constant called `input`.
 
-## 1.3 - Key code constants
+Append this new `input` element to the `item` element with the correct DOM method.
 
-@keycode-constants At the top of the event handler anonymous function. Declare 4 constants called `KEYCODE_LEFT`, `KEYCODE_UP`, `KEYCODE_RIGHT`, and `KEYCODE_DOWN`. Assign them the values 37, 38, 39 and 40 respectively.
+## Create a Save Button
 
-## 1.5 - Create a stage
+Below the `input` element, use the `createElement()` method to create a DOM element of type `button`. Save a reference to the element in a constant called `save_btn`.
 
-@create-stage Below the key code constants assign a constant called `stage` a `new createjs Stage`. Make sure that you have the proper ID.
+Change the `innerHTML` property of the `save_btn` element to `Save`.
 
-## 1.6 - Create a shape
+## Save Button Event Listener
 
-@shio-shape Below the `stage` constant, assign a  Assign a constant called `ship` a `new createjs Shape`.
+We can now add an event listener to `save_btn`. Below the existing code, register an event listener for `save_btn` that listens for a `click` event. Pass an arrow function as the handler. The arrow function does not need to accept any parameters.
 
-## 1.7 - Draw the ship shape
+## Validate Input - if conditional
 
-@draw-ship On the `graphics` layer of the `ship` shape draw a white ship with the following points (0, 0); (30, 15); (0, 30); (7.5, 15); (0, 0);
+In the body of the `save_btn` event handler, set the HTML of the `error` element to an empty string.
 
-## 1.8 - Add a shape to the stage
+Next, create an `if` statement that tests whether the `value` of `input` is not equal to an empty string.
 
-@ship-addchild Add the `ship` Shape to the `stage`.
+## Validate Input - if body
 
-## 1.9 - Ticker event listener
+Add three lines in the body of the `if` statement. The first should add `1` to `order` and reassign the value back to `order`. The second should change the HTML of the `item` element to the `value` of the `input`. The third should toggle `adding` to `false`.
 
-@ticker-event-listener Using the `createjs.Ticker` object and the on method, register a handler for the "tick" event. The handler function should be and anonymous function that updates the `stage`.
+## Validate Input - else body
 
-## 1.10 - Ticker FPS
+Still in the `save_btn` handler, add an `else` statement to the existing `if` statement. In the body of this `else` statement, set the HTML of the `error` element to the `message` string.
 
-@Ticker-fps Use `createjs.Ticker` object and `setFPS()` to set the frame per second to 30.
+## Append the Save Button
 
-## 1.11 - Keyboard listener
+Now that all parts of the `save_btn` are complete, append it to the `item` element. With this `item` is now complete as well, return it from the `create_item()` function.
 
-@keyboard-listener Listen for when a user presses a key down. The handler should be called be and anonymous function with an `event` argument.
+## Drop Event - Handler
 
-## 1.12 - Switch statement
+Below the `create_item()` function, find the `forEach` loop. In the body, add an event listener that listens for the `drop` event to `element`. When creating the event listener, pass an arrow function as the handler. The arrow function should accept a single parameter of `event`.
 
-@switch-statement Create a new switch statement and test the event.keyCode
+To begin the event handler, prevent the default action of `event`.
 
-## 1.13 - Left key
+## Drop Event - Data Transfer
 
-@left-key Create a case for KEYCODE_LEFT that moves the ship left at the rate 15 pixels. Break out of this case.
+Still in the `drop` event handler, get the data in `'text'` with the `getData()` method. The `getData()` method is part of the `DataTransfer` object, which needs to be accessed through the `event`. Store the returned value in a constant called `id`.
 
-## 1.14 - Up key
+## Drop Event - Append Element
 
-@up-key Create a case for KEYCODE_UP that moves the ship up at the rate 15 pixels. Break out of this case.
+As the last line of the `drop` event handler, append the element that has an id of `id` to `event.target`. **Hint: use the `getElementById()` method of `document`.**
 
-## 1.15 - Right key
+## Drag Event - Handler
 
-@up-key Create a case for KEYCODE_RIGHT that moves the ship right at the rate 15 pixels. Break out of this case.
-
-## 1.16 - Down key
-
-@down-key Create a case for KEYCODE_DOWN that moves the ship right at the rate 15 pixels. Break out of this case.
+Still in the `forEach()` loop function, add an event listener that listens for the `dragover` event to `element`. When creating the event listener, pass an arrow function as the handler. The arrow function should accept a single parameter of `event` and prevent the default action of `event`.
