@@ -41,6 +41,9 @@ jscs.registerMethods({
   findAssignment: function(name) {
     return this.find(jscs.AssignmentExpression).filter(path => (path.value.left.type === 'Identifier' && path.value.left.name === name));
   },
+  findUpdate: function(name, operator) {
+    return this.find(jscs.UpdateExpression).filter(path => (path.value.argument.name === name && path.value.operator === operator));
+  },
   findCall: function(name) {
     return this.find(jscs.CallExpression).filter(path => {
       let callee_name = '';

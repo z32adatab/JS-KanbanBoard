@@ -166,13 +166,36 @@ describe('Module 01 - Kanban Board Events - kanban.js', () => {
     assert(validate_if.consequent, 'Are you creating an `if` statement to check if `input.value` is empty?');
     const if_body = jscs(validate_if.consequent)
 
-    const if_order = if_body.findAssignment('order');
-    const if_order_match = {
+    const if_order_ap = if_body.findAssignment('order');
+    const if_order_pp = if_body.findUpdate('order', '++');
+
+    const if_order_ap_match = {
       'operator': '+=',
       'left.name': 'order',
       'right.value': 1
     };
-    assert(matchObj(if_order, if_order_match), 'In the `if` statement, are adding `1` to `order` and reassign it back to `order`?');
+    const if_order_pp_match = {
+      'operator': '++',
+      'argument.name': 'order'
+    };
+    const if_order_full_left_match = {
+      'operator': '=',
+      'left.name': 'order',
+      'right.operator': '+',
+      'right.left.name': 'order',
+      'right.right.value': 1,
+    };
+    const if_order_full_right_match = {
+      'operator': '=',
+      'left.name': 'order',
+      'right.operator': '+',
+      'right.left.value': 1,
+      'right.right.name': 'order',
+    };
+    assert(matchObj(if_order_ap, if_order_ap_match) ||
+           matchObj(if_order_ap, if_order_full_left_match) ||
+           matchObj(if_order_ap, if_order_full_right_match) ||
+           matchObj(if_order_pp, if_order_pp_match), 'In the `if` statement, are adding `1` to `order`?');
 
     const if_item_html = if_body.findPropertyAssignment('item', 'innerHTML');
     const if_item_text = if_body.findPropertyAssignment('item', 'textContent');
