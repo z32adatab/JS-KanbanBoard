@@ -84,9 +84,9 @@ const matchParam = (obj, other, level = false) => {
     const obj_value = obj.get().value;
     const other_value = other.get().value;
     if (checkNested(obj_value, 'arguments') &&
-       obj_value.arguments.length >= 2 &&
-       checkNested(other_value, 'callee', 'object', 'object', 'name') && 
-       obj_value.arguments[1].params.length) {
+      obj_value.arguments.length >= 2 &&
+      checkNested(other_value, 'callee', 'object', 'object', 'name') && 
+      obj_value.arguments[1].params.length) {
       if (level) {
         if (checkNested(other_value.arguments[1], 'object', 'object', 'name')) {
           return mEqual(obj_value.arguments[1].params[0].name, other_value.callee.object.object.name, other_value.arguments[1].object.object.name);

@@ -244,7 +244,7 @@ describe('Module 01 - Kanban Board Events - kanban.js', () => {
     };
     assert(match(append_child, append_child_match) || match(append, append_match), 'Below the `save_btn` event listener, are you appending `save_btn` to `item`?');
 
-    const return_item = create_item.findReturn();
+    const return_item = create_item.find(jscs.ReturnStatement, { argument: { type: 'Identifier', name: 'item'}});
     const return_item_match = {
       'type': 'ReturnStatement',
       'argument.name': 'item'
